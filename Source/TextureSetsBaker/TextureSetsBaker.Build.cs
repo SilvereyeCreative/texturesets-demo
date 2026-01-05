@@ -29,6 +29,6 @@ public class TextureSetsBaker : ModuleRules
 			}
 			);
 
-		AddEngineThirdPartyPrivateStaticDependencies(Target, "Embree3");
+		AddEngineThirdPartyPrivateStaticDependencies(Target, "Embree");
 	}
 }

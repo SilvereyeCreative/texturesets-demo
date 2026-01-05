@@ -2,8 +2,8 @@
 
 #include "BakeUtil.h"
 
-#include <embree3/rtcore.h>
-#include <embree3/rtcore_ray.h>
+#include <embree4/rtcore.h>
+#include <embree4/rtcore_ray.h>
 
 #include "Async/ParallelFor.h"
 #include "Engine/StaticMeshSourceData.h"
@@ -125,10 +125,7 @@ void FBakeUtil::BakeUV(const FBakeArgs& Args, FBakeResults& Results)
 
 			rayhit.hit.geomID = RTC_INVALID_GEOMETRY_ID;
 
-			RTCIntersectContext context;
-			rtcInitIntersectContext(&context);
-
-			rtcIntersect1(UVscene, &context, &rayhit);
+			rtcIntersect1(UVscene, &rayhit);
 
 			float value = NAN;
 
@@ -161,9 +158,6 @@ void FBakeUtil::BakeUV(const FBakeArgs& Args, FBakeResults& Results)
 		}
 
 		// Cast 16 rays per pixel
-		RTCIntersectContext Context;
-		rtcInitIntersectContext(&Context);
-
 		int32 Valid[16];
 		RTCRay16 RayHit;
 
@@ -201,7 +195,7 @@ void FBakeUtil::BakeUV(const FBakeArgs& Args, FBakeResults& Results)
 					RayHit.tfar[r] = std::numeric_limits<float>::infinity();
 				}
 
-				rtcOccluded16(Valid, MeshScene, &Context, &RayHit);
+				rtcOccluded16(Valid, MeshScene, &RayHit);
 
 				float SampleAverage = 0;
 
